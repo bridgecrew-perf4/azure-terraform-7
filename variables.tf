@@ -1,18 +1,18 @@
 variable "resource_group_name" {
   type    = string
-  default = "rg-aks-eastus-prod"
+  default = "rg-aks-centralus"
 }
 variable "location" {
   type    = string
-  default = "eastus"
+  default = "centralus"
 }
 variable "cluster_name" {
   type    = string
-  default = "aks-eastus-prod"
+  default = "aks-centralus"
 }
 variable "dns_prefix" {
   type    = string
-  default = "selfhub"
+  default = "kubernet"
 }
 
 variable "node_pool_name" {

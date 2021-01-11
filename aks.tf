@@ -9,32 +9,20 @@ resource "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = azurerm_resource_group.rg.name
   dns_prefix          = var.dns_prefix
 
-  # (Optional) Addons for AKS
   addon_profile {
     aci_connector_linux {
-      enabled     = true
+      enabled     = false
       subnet_name = azurerm_subnet.aci.name
     }
 
-    # preview feature
-    # azure_policy {
-    #   enabled = true
-    # }
-
-    http_application_routing {
-      enabled = true
-    }
     kube_dashboard {
       enabled = true
     }
+
     oms_agent {
       enabled                    = true
       log_analytics_workspace_id = azurerm_log_analytics_workspace.law.id
     }
-  }
-
-  network_profile {
-    network_plugin = "azure"
   }
 
   # (Optional) The IP ranges to whitelist for incoming traffic to the masters.
@@ -52,10 +40,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     scale_down_utilization_threshold = 0.5
   }
 
-  # preview feature
-  # enable_pod_security_policy = true
-
-
   default_node_pool {
     name                = var.node_pool_name
     min_count           = var.min_node_count
@@ -66,16 +50,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   role_based_access_control {
     enabled = true
+    azure_active_directory {
+        managed = true
+    }
+
   }
 
   identity {
     type = "SystemAssigned"
   }
-
-  # service_principal {
-  #   client_id = ""
-  #   client_secret = ""
-  # }
 
   tags = var.tags
 }
